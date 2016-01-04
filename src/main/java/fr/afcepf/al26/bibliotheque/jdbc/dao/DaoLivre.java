@@ -16,7 +16,7 @@ import fr.afcepf.al26.bibliotheque.jdbc.Al26DataSource;
 
 public class DaoLivre implements IDaoLivre {
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 *
 	 * @see
