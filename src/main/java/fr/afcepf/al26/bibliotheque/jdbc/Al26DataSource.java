@@ -19,7 +19,7 @@ public class Al26DataSource implements DataSource {
 	private static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Al26DataSource.class);
 	
 	static{
-		log.info("Chargement des paramètres du fichier de properties");
+		log.info("Chargement des parametres du fichier de properties");
 	ResourceBundle rb = ResourceBundle.getBundle("al26_jdbc_config");
 	url = rb.getString("url");
 	mdp = rb.getString("mdp");
@@ -32,7 +32,7 @@ public class Al26DataSource implements DataSource {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	log.info("datasource prête");
+	log.info("datasource prete");
 	}
 	
 	@Override
