@@ -2,7 +2,6 @@ package fr.afcepf.al26.bibliotheque.idao;
 
 import fr.afcepf.al26.bibliotheque.entity.Utilisateur;
 
-import java.util.List;
 
 /**
  * Created by Stagiaire on 04/01/2016.
@@ -10,9 +9,5 @@ import java.util.List;
 public interface IDaoUtilisateur {
     void ajouterUtilisateur(Utilisateur utilisateur);
 
-    List<Utilisateur> getUtilisateurs();
-
-    List<Utilisateur> rechercherUtilisateurParPseudo(String pseudo);
-
-    Utilisateur getUtilisateursById(int idAuteur);
+    Utilisateur getUtilisateurs(String mail,String mdp);
 }

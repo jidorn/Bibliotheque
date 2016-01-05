@@ -16,6 +16,13 @@ public class Utilisateur {
         this.mdp = mdp;
     }
 
+    public Utilisateur(int idUtilisateur, String pseudo, String mail, String type) {
+        this.idUtilisateur = idUtilisateur;
+        this.pseudo = pseudo;
+        this.mail = mail;
+        this.type = type;
+    }
+
     public int getIdUtilisateur() {
         return idUtilisateur;
     }

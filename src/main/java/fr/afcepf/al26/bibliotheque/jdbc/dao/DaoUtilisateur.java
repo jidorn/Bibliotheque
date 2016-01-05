@@ -48,93 +48,20 @@ public class DaoUtilisateur implements IDaoUtilisateur {
     }
 
     @Override
-    public List<Utilisateur> getUtilisateurs() {
-        List<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
-        try {
-            cnx = ds.getConnection();
-            String requete = "Select * from Utilisateur";
-            PreparedStatement pstmt = cnx.prepareStatement(requete);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                listeUtilisateurs.add(
-                        new Utilisateur(
-                                rs.getString("pseudo"),
-                                rs.getString("mail"),
-                                rs.getString("mdp"))
-                );
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                cnx.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return listeUtilisateurs;
-    }
-
-    @Override
-    public List<Utilisateur> rechercherUtilisateurParPseudo(String pseudo) {
-        List<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
-
-        try {
-            cnx = ds.getConnection();
-            String requete = "Select * from Utilisateur where pseudo like ?";
-            PreparedStatement pstmt = cnx.prepareStatement(requete);
-            pstmt.setString(1, "%" + pseudo + "%");
-
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                listeUtilisateurs.add(
-                        new Utilisateur(
-                                rs.getString("pseudo"),
-                                rs.getString("mail"),
-                                rs.getString("mdp")
-                        )
-                );
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                cnx.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        return listeUtilisateurs;
-    }
-
-    @Override
-    public Utilisateur getUtilisateursById(int idUtilisateur) {
+    public Utilisateur getUtilisateurs(String mail, String mdp) {
+        String requete = "SELECT id_utilisateur, pseudo, mail, type FROM UTILISATEUR WHERE MAIL LIKE ? AND MDP LIKE ?";
         Utilisateur utilisateur = null;
-        ArrayList<Utilisateur> liste = new ArrayList<Utilisateur>();
-        String requete = "Select * from Utilisateur where id_utilisateur= ?";
+        List<Utilisateur> list = new ArrayList<Utilisateur>();
         try {
             cnx = ds.getConnection();
-            PreparedStatement pstmt = cnx.prepareStatement(requete);
-            pstmt.setInt(1, idUtilisateur);
-            ResultSet rs = pstmt.executeQuery();
-
+            PreparedStatement preparedStatement = cnx.prepareStatement(requete);
+            preparedStatement.setString(1, mail);
+            preparedStatement.setString(2, mdp);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                liste.add(
-                        new Utilisateur(
-                                rs.getString("pseudo"),
-                                rs.getString("mail"),
-                                rs.getString("mdp")
-                        )
-                );
+                list.add(hydraterUtilisateur(rs));
             }
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -143,10 +70,18 @@ public class DaoUtilisateur implements IDaoUtilisateur {
                 e.printStackTrace();
             }
         }
-        if (liste.size() == 1) {
-            utilisateur = liste.get(0);
-        }
+        if (list.size() == 1)
+            utilisateur = list.get(0);
 
         return utilisateur;
     }
+
+    private Utilisateur hydraterUtilisateur(ResultSet rs) throws SQLException {
+        int idUtilisateur = rs.getInt("id_utilisateur");
+        String mail = rs.getString("mail");
+        String pseudo = rs.getString("pseudo");
+        String type = rs.getString("type");
+        return new Utilisateur(idUtilisateur, pseudo, mail, type);
+    }
+
 }
