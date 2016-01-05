@@ -78,16 +78,35 @@ public class DaoUtilisateur implements IDaoUtilisateur {
 
     @Override
     public boolean isMailOuPseudoExist(String nom, String valeur) throws BibliothequeException {
-        String requete= "SELECT COUNT(id_utilisateur) FROM UTILISATEUR ";
-        switch (nom){
+        int nb = 1;
+        String requete = "SELECT COUNT(id_utilisateur) FROM UTILISATEUR ";
+        switch (nom) {
             case "pseudo":
-                requete +=  "WHERE pseudo LIKE ?";break;
-            case "mail" :
-                requete += "WHEREW mail LIKE ?";break;
-            default:throw new BibliothequeException();
+                requete += "WHERE pseudo LIKE ?";
+                break;
+            case "mail":
+                requete += "WHEREW mail LIKE ?";
+                break;
+            default:
+                throw new BibliothequeException();
         }
-
-        return true;
+        try {
+            cnx = ds.getConnection();
+            PreparedStatement preparedStatement = cnx.prepareStatement(requete);
+            preparedStatement.setString(1, valeur);
+            ResultSet rs = preparedStatement.executeQuery();
+            rs.next();
+            nb = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                cnx.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return (nb ==0)? false:true;
     }
 
     private Utilisateur hydraterUtilisateur(ResultSet rs) throws SQLException {
