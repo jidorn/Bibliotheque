@@ -19,9 +19,6 @@ public class DaoAuteur implements IDaoAuteur {
     private Connection cnx;
     private DataSource ds = new Al26DataSource();
 
-    /* (non-Javadoc)
-     * @see fr.afcepf.al26.bibliotheque.jdbc.dao.IDaoAuteur#ajouterAuteur(fr.afcepf.al26.bibliotheque.entity.Auteur)
-     */
     @Override
     public void ajouterAuteur(Auteur auteur) {
 
@@ -55,9 +52,6 @@ public class DaoAuteur implements IDaoAuteur {
 
     }
 
-    /* (non-Javadoc)
-     * @see fr.afcepf.al26.bibliotheque.jdbc.dao.IDaoAuteur#rechercherAuteurParNom(java.lang.String)
-     */
     @Override
     public List<Auteur> rechercherAuteurParNom(String nom) {
         List<Auteur> listeAuteurs = new ArrayList<Auteur>();
