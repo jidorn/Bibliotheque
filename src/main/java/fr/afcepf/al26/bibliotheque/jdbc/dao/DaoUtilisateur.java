@@ -1,6 +1,7 @@
 package fr.afcepf.al26.bibliotheque.jdbc.dao;
 
 import fr.afcepf.al26.bibliotheque.entity.Utilisateur;
+import fr.afcepf.al26.bibliotheque.exception.BibliothequeException;
 import fr.afcepf.al26.bibliotheque.idao.IDaoUtilisateur;
 import fr.afcepf.al26.bibliotheque.jdbc.Al26DataSource;
 import org.apache.log4j.Logger;
@@ -33,8 +34,7 @@ public class DaoUtilisateur implements IDaoUtilisateur {
             if (nb == 1) {
                 ResultSet rs = preparedStatement.getGeneratedKeys();
                 rs.next();
-                int idUtilisateur = rs.getInt(1);
-                utilisateur.setIdUtilisateur(idUtilisateur);
+                utilisateur.setIdUtilisateur(rs.getInt(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,6 +74,20 @@ public class DaoUtilisateur implements IDaoUtilisateur {
             utilisateur = list.get(0);
 
         return utilisateur;
+    }
+
+    @Override
+    public boolean isMailOuPseudoExist(String nom, String valeur) throws BibliothequeException {
+        String requete= "SELECT COUNT(id_utilisateur) FROM UTILISATEUR ";
+        switch (nom){
+            case "pseudo":
+                requete +=  "WHERE pseudo LIKE ?";break;
+            case "mail" :
+                requete += "WHEREW mail LIKE ?";break;
+            default:throw new BibliothequeException();
+        }
+
+        return true;
     }
 
     private Utilisateur hydraterUtilisateur(ResultSet rs) throws SQLException {
