@@ -85,7 +85,7 @@ public class DaoUtilisateur implements IDaoUtilisateur {
                 requete += "WHERE pseudo LIKE ?";
                 break;
             case "mail":
-                requete += "WHEREW mail LIKE ?";
+                requete += "WHERE mail LIKE ?";
                 break;
             default:
                 throw new BibliothequeException();
